@@ -38,12 +38,12 @@
 				"-it",
 				"-v",
 				"${workspaceFolder}${pathSeparator}conf${pathSeparator}${input:grabber}/test.conf:/xmltv/config/grabber.conf",
-				"-e",
-				"CRON_EXPRESSION=* * * * *",
+				"-v",
+				"${workspaceFolder}${pathSeparator}output:/xmltv/data",
 				"-e",
 				"GRABBER=${input:grabber}",
-				"-e",
-				"DAYS=1",
+				//"-e",
+				//"DAYS=1",
 				"jmtvms/docker-xmltv:latest"
 			],
 			"problemMatcher": []

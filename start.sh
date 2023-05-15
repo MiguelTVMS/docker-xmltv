@@ -49,3 +49,9 @@ fi
 command_line="$grabber$grabber_args"
 
 echo "Using the following command line: $command_line"
+eval $command_line
+echo "Copying te file $OUTPUT.tmp to $OUTPUT"
+cp "$OUTPUT.tmp" "$OUTPUT"
+echo "Removing $OUTPUT.tmp"
+rm "$OUTPUT.tmp"
+echo "Done!"
