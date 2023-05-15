@@ -13,7 +13,6 @@ ENV XMLTV_DATA_FOLDER=${XMLTV_FOLDER}/data
 ENV CRONTAB_FILE=${CRONTAB_FILE}
 
 # Configurable variables
-ENV CRON_EXPRESSION="30 3 */5 * *"
 ENV GRABBER=""
 ENV GRABBER_ARGS=""
 
@@ -27,7 +26,6 @@ RUN apt update && \
     apt upgrade --yes && \
     apt install --yes \
     xmltv \
-    cron \
     && apt clean \
     && apt autoremove --yes
 

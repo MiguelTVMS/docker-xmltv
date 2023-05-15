@@ -1,12 +1,5 @@
 #!/bin/bash
 
-lock_file=$XMLTV_FOLDER/cron.lock
-
-if [ -z "$CRON_EXPRESSION" ]; then
-    echo "CRON_EXPRESSION not set. Exiting..."
-    exit 1
-fi
-
 if [ ! -z "$GRABBER" ]; then
 
     # Validade grabber aginst a list of available grabbers
@@ -23,8 +16,6 @@ else
     exit 1
 fi
 
-crontab_file="$CRONTAB_FILE"
-cron_expression="$CRON_EXPRESSION"
 grabber="$GRABBER"
 
 grabber_args=""
@@ -37,7 +28,7 @@ else
 fi
 
 if [ ! -z "$OUTPUT" ]; then
-    grabber_args="$grabber_args --output \"$OUTPUT\""
+    grabber_args="$grabber_args --output \"$OUTPUT.tmp\""
 else
     echo "OUTPUT not set. Exiting..."
     exit 1
@@ -56,15 +47,5 @@ if [ ! -z "$GRABBER_ARGS" ]; then
 fi
 
 command_line="$grabber$grabber_args"
-cron_line="$cron_expression flock -w 0 $lock_file $command_line"
 
-echo "Using the following cron expression: $cron_expression"
 echo "Using the following command line: $command_line"
-echo "Using the following lock file: $lock_file"
-echo "Creating crontab \"$crontab_file\"..."
-echo "$cron_line > /proc/1/fd/1 2>&1" >$crontab_file
-chmod 0644 $crontab_file
-crontab $crontab_file
-
-echo "Starting cron..."
-cron -f
