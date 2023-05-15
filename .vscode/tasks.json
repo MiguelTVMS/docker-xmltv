@@ -1,0 +1,74 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Docker Build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"type": "shell",
+			"command": "docker",
+			"args": [
+				"build",
+				"--pull",
+				"--rm",
+				"-f",
+				"Dockerfile",
+				"-t",
+				"jmtvms/docker-xmltv:latest",
+				"."
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "Run Grabber Test",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"dependsOn": [
+				"Docker Build"
+			],
+			"type": "shell",
+			"command": "docker",
+			"args": [
+				"run",
+				"--rm",
+				"-it",
+				"-v",
+				"${workspaceFolder}${pathSeparator}conf${pathSeparator}${input:grabber}/test.conf:/xmltv/config/grabber.conf",
+				"-e",
+				"CRON_EXPRESSION=* * * * *",
+				"-e",
+				"GRABBER=${input:grabber}",
+				"-e",
+				"DAYS=1",
+				"jmtvms/docker-xmltv:latest"
+			],
+			"problemMatcher": []
+		}
+	],
+	"inputs": [
+		{
+			"type": "pickString",
+			"id": "grabber",
+			"description": "Grabber to run",
+			"options": [
+				"tv_grab_ch_search",
+				"tv_grab_combiner",
+				"tv_grab_fi",
+				"tv_grab_fi_sv",
+				"tv_grab_fr",
+				"tv_grab_huro",
+				"tv_grab_is",
+				"tv_grab_it",
+				"tv_grab_na_dtv",
+				"tv_grab_na_tvmedia",
+				"tv_grab_pt_meo",
+				"tv_grab_pt_vodafone",
+				"tv_grab_uk_tvguide",
+			]
+		}
+	]
+}
